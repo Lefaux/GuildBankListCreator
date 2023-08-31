@@ -1,4 +1,4 @@
-## Interface: 11302
+## Interface: 11404
 ## Title: GuildBankListCreator
 ## Notes: Constructs a copyable list of inventory and Wowhead links
 ## Author: Tyrrhenus of Mirage Raceway

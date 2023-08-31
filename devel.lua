@@ -637,7 +637,7 @@ function GBLC:GetBags()
 	for container = -1, 12 do
 		bags[#bags + 1] = {
 			container = container,
-			bagName = GetBagName(container)
+			bagName = C_Container.GetBagName(container)
 		}
 	end
 
@@ -653,19 +653,19 @@ function GBLC:GetBagItems()
 	local bagItems = {}
 
 	for container = -1, 12 do
-		local numSlots = GetContainerNumSlots(container)
+		local numSlots = C_Container.GetContainerNumSlots(container)
 
 		for slot=1, numSlots do
-			local texture, count, locked, quality, readable, lootable, link, isFiltered, hasNoValue, itemID = GetContainerItemInfo(container, slot)
+			local itemInfo = C_Container.GetContainerItemInfo(container, slot)
 
-			if itemID then
-				local sName, sLink, iRarity, iLevel, iMinLevel, sType, sSubType, iStackCount = GetItemInfo(itemID)
+			if itemInfo then
+				local sName, sLink, iRarity, iLevel, iMinLevel, sType, sSubType, iStackCount = GetItemInfo(itemInfo.itemID)
 				local stacked = false
 				
 				if ((StackItems) and (#bagItems > 0)) then
 					for stackitem = 1, #bagItems do
-						if (bagItems[stackitem].itemID == itemID) then
-							bagItems[stackitem].count = bagItems[stackitem].count + count
+						if (bagItems[stackitem].itemID == itemInfo.itemID) then
+							bagItems[stackitem].count = bagItems[stackitem].count + itemInfo.stackCount
 							stacked = true
 							break
 						end
@@ -675,8 +675,8 @@ function GBLC:GetBagItems()
 				if (not stacked) then
 					bagItems[#bagItems + 1] = {					
 						itemName = sName,
-						itemID = itemID,
-						count = count
+						itemID = itemInfo.itemID,
+						count = itemInfo.stackCount
 					}
 				end
 			end
